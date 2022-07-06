@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 
-import './Count.css'
-function Count() {
+import './Todos.css'
+function Todos() {
     if (sessionStorage.getItem("todoList") === null) {
         sessionStorage.setItem("todoList", [])
     }
@@ -14,8 +14,13 @@ function Count() {
         , [todoList])
     const textareaValue = useRef()
     function addTodos() {
-        settodoList([...todoList, { title: textareaValue.current.value, complete: false }])
-        textareaValue.current.value = "";
+        if (textareaValue.current.value == "") {
+            alert("Không được để trống")
+        }
+        else {
+            settodoList([...todoList, { title: textareaValue.current.value, complete: false }])
+            textareaValue.current.value = "";
+        }
     }
     function removeTodos(key) {
         var newTodoList = todoList;
@@ -24,11 +29,16 @@ function Count() {
     }
     function updateTodos(key) {
         const newItem = prompt("Chỉnh sửa lại công việc")
-        var newTodoList = todoList;
-        newTodoList[key].title = newItem;
-        settodoList([...newTodoList])
+        if (newItem == "") {
+            alert("Không được để trống")
+        }
+        else {
+            var newTodoList = todoList;
+            newTodoList[key].title = newItem;
+            settodoList([...newTodoList])
+        }
     }
-    function setStatusTodo(key,status) {
+    function setStatusTodo(key, status) {
         var newTodoList = todoList;
         newTodoList[key] = {
             ...newTodoList[key],
@@ -67,7 +77,7 @@ function Count() {
                                             onClick={() => setStatusTodo(key, false)}
                                             className="table__button complete"
                                         >
-                                           Chưa hoàn thành</button>}
+                                            Chưa hoàn thành</button>}
                                         <button
                                             onClick={() => updateTodos(key)}
                                             className="table__button update"
@@ -88,4 +98,4 @@ function Count() {
         </>
     )
 }
-export default Count
+export default Todos

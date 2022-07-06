@@ -1,10 +1,10 @@
-import logo from './logo.svg';
 
-import Count from './components/Count'
+import Todos from './components/Todos';
 function App() {
+  document.title = 'Todos App'
   return (
     <div className="App">
-        <Count />
+        <Todos />
     </div>
   );
 }
