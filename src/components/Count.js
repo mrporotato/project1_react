@@ -14,7 +14,7 @@ function Count() {
         , [todoList])
     const textareaValue = useRef()
     function addTodos() {
-        settodoList([...todoList, textareaValue.current.value])
+        settodoList([...todoList, { title: textareaValue.current.value, complete: false }])
         textareaValue.current.value = "";
     }
     function removeTodos(key) {
@@ -25,7 +25,16 @@ function Count() {
     function updateTodos(key) {
         const newItem = prompt("Chỉnh sửa lại công việc")
         var newTodoList = todoList;
-        newTodoList[key] = newItem;
+        newTodoList[key].title = newItem;
+        settodoList([...newTodoList])
+    }
+    function setStatusTodo(key,status) {
+        var newTodoList = todoList;
+        newTodoList[key] = {
+            ...newTodoList[key],
+            complete: status
+        }
+        console.log(newTodoList[key]);
         settodoList([...newTodoList])
     }
     return (
@@ -45,18 +54,31 @@ function Count() {
                         return (
                             <tbody>
                                 <td>{key + 1}</td>
-                                <td>
-                                    <span className="table__todos">{todo}</span>
-                                    <button
-                                        onClick={() => updateTodos(key)}
-                                        className="table__button update"
-                                    >
-                                        Sửa</button>
-                                    <button
-                                        onClick={() => removeTodos(key)}
-                                        className="table__button delete"
-                                    >
-                                        Xóa</button>
+                                <td className="todos__content">
+                                    <span className="table__todos">{todo.title}</span>
+                                    <div>
+                                        {todo.complete && <span className="todos__status">Đã hoàn thành</span>}
+                                        {!todo.complete && <button
+                                            onClick={() => setStatusTodo(key, true)}
+                                            className="table__button complete"
+                                        >
+                                            Hoàn thành</button>}
+                                        {todo.complete && <button
+                                            onClick={() => setStatusTodo(key, false)}
+                                            className="table__button complete"
+                                        >
+                                           Chưa hoàn thành</button>}
+                                        <button
+                                            onClick={() => updateTodos(key)}
+                                            className="table__button update"
+                                        >
+                                            Sửa</button>
+                                        <button
+                                            onClick={() => removeTodos(key)}
+                                            className="table__button delete"
+                                        >
+                                            Xóa</button>
+                                    </div>
                                 </td>
                             </tbody>
                         )
